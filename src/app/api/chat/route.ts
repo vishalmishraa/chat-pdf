@@ -14,19 +14,22 @@ export const runtime = 'edge';
 
 // convert messages from the Vercel AI SDK Format to the format
 // that is expected by the Google GenAI SDK
-const buildGoogleGenAIPrompt = (messages: Message[]) => ({
-    contents: messages
+const buildGoogleGenAIPrompt = (messages: Message[] ) => {
+   console.log(messages);
+   return { contents: messages
       .filter(message => message.role === 'user' || message.role === 'assistant')
       .map(message => ({
         role: message.role === 'user' ? 'user' : 'model',
         parts: [{ text: message.content }],
-      })),
-  });
+      }))
+    }
+  };
 
 export async function POST(req: Request) {
     
     try {
         // Extract the `prompt` from the body of the request
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
         const { messages, chatId } = await req.json();
         const _chats = await db.select().from(chats).where(eq(chats.id, chatId));
         if (_chats.length != 1) {
@@ -39,12 +42,15 @@ export async function POST(req: Request) {
         
         const context = await getContext(lastMessage.content, fileKey);
         console.log(context);
+
         
 
-       
+      
         const prompt ={
-         
-          Text: ` 
+         role:'user',
+         parts:[
+          {
+          text: ` 
           
           AI assistant is a brand new, powerful, human-like artificial intelligence.
           The traits of AI include expert knowledge, helpfulness, cleverness, and articulateness.
@@ -56,30 +62,44 @@ export async function POST(req: Request) {
           ${context}
           END OF CONTEXT BLOCK
           AI assistant will take into account any CONTEXT BLOCK that is provided in a conversation.
-          If the context does not provide the answer to question, the AI assistant will Read the context carefully and answer the related possible answer".
-          If the context does not provide the answer to question, the AI assistant will say, "I'm sorry, but I don't know the answer to that question".
+          If the context does not provide the answer to question, the AI assistant will say, "I'm sorry, but I don't know the answer to that question , plese write about the question ".
           AI assistant will not apologize for previous responses, but instead will indicated new information was gained.
           AI assistant will not invent anything that is not drawn directly from the context.
           `,
+          }
+         ]
+         
         };
-        console.log('prompt',prompt.Text);
+        const dd  =[ messages.filter((message: Message) => message.role === 'user' || message.role === 'assistant').map((message: Message) => ({
+          role: message.role === 'user' ? 'user' : 'model',
+          parts: [{ text: message.content }],
+        }))] 
+        console.log(dd);
+        
+        
+        
        
+        console.log(buildGoogleGenAIPrompt([messages]));
 
+        console.log(prompt , ...messages.filter((message: Message) => message.role === "user"))
         const geminiStream = await genAI
-          .getGenerativeModel({ model: 'gemini-pro' })
-          .generateContentStream({
-            contents: [{ role: 'user', parts: [{ text: prompt.Text  }] }],
-          });
-
-        // const geminiStream = await model.generateContentStream([prompt, ...messages]);
+                            .getGenerativeModel({ model: 'gemini-pro' })
+                            .generateContentStream({
+                              contents: [ messages.filter((message: Message) => message.role === 'user' || message.role === 'assistant').map((message: Message) => ({
+                                role: message.role === 'user' ? 'user' : 'model',
+                                parts: [{ text: message.content }],
+                              }))] ,
+                            });
 
         // Convert the response into a friendly text-stream
-        const stream = GoogleGenerativeAIStream(geminiStream);
-        
+  const stream = GoogleGenerativeAIStream(geminiStream);
+ 
+  // Respond with the stream
+  return new StreamingTextResponse(stream);
 
  
         // Respond with the stream
-        return new StreamingTextResponse(stream);
+        return (stream);
 
     } catch (error) {
         console.log(error);

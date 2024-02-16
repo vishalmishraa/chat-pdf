@@ -10,7 +10,7 @@ const Navigation =  async() => {
     const {userId} = await auth();
     const isAuth = !!userId;
   return (
-    <div className="fixed  top-0 right-0 left-0 p-4 flex items-center justify-between z-10">
+    <div className="  fixed top-0 right-0 left-0 p-4 flex items-center justify-between z-10">
       <aside className=" md:ml-40 flex items-center gap-2">
         <span className="text-xl font-bold"> Chat PDF</span>
       </aside>    

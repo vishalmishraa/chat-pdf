@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function convertToAscii(inputString: string) {
-  //return any non ascii charechter
-  const asciiString = inputString.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "-");
+  // remove non ascii characters
+  const asciiString = inputString.replace(/[^\x00-\x7F]+/g, "");
   return asciiString;
 } 
