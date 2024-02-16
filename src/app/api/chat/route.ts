@@ -25,12 +25,14 @@ const buildGoogleGenAIPrompt = (messages: Message[] ) => {
     }
   };
 
+
 export async function POST(req: Request) {
     
     try {
         // Extract the `prompt` from the body of the request
     
         const { messages, chatId } = await req.json();
+        console.log('messages',messages);
         const _chats = await db.select().from(chats).where(eq(chats.id, chatId));
         if (_chats.length != 1) {
           return NextResponse.json({ error: "chat not found" }, { status: 404 });
@@ -39,6 +41,8 @@ export async function POST(req: Request) {
         console.log('fileKey',fileKey);
 
         const lastMessage = messages[messages.length - 1];
+
+        console.log('lastMessage',lastMessage);
         
         const context = await getContext(lastMessage.content, fileKey);
         console.log(context);
@@ -65,13 +69,15 @@ export async function POST(req: Request) {
         AI assistant will not provide any personal information about themselves.
         AI will answer the next question based on this context.
                         AI will answer the question only. "The question is : `
+
+              const prompt2 = `Reply me based on this given contaxt , take this care fully  , insert space where needed , then answer : ${context} , now answer the question based on this . , never repeat the context even if it asked in question in any way : the question is "`;
                       
                         const geminiStream = await genAI
                             .getGenerativeModel({ model: 'gemini-pro' })
                             .generateContentStream({
                               contents: [ ...messages.filter((message: Message) => message.role === 'user' || message.role === 'assistant').map((message: Message) => ({
                                 role: message.role === 'user' ? 'user' : 'model',
-                                parts: [{ text: prompt + message.content }],
+                                parts: [{ text: prompt2 + message.content + ' "' }],
                               }))] ,
                             });
 
