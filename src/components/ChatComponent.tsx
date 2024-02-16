@@ -42,8 +42,8 @@ const ChatComponent = ({ chatId }: Props) => {
   }, [messages]);
   return (
     <div
-      className="relative  overflow-scroll h-full border-none"
-      id="message-container"
+      className="relative overflow-scroll h-full border-none"
+      id="message-container "
     >
       {/* header */}
       <div className="sticky top-0 inset-x-0 p-2  h-fit">

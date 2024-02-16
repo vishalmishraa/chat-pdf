@@ -47,7 +47,7 @@ const chatPage =async ({ params : { chatId } }:Props) => {
           </div>
 
           {/* chat component */}
-          <div className='relative mt-14 flex-[4] '>
+          <div className=' relative mt-14 flex-[4] '>
             <ChatComponent chatId={parseInt(chatId)}/>
           </div>
         </div>

@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "export NODE_OPTIONS='--max-old-space-size=8192' && next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "export NODE_OPTIONS='--max-old-space-size=8192' &&  next build",
+    "start": "export NODE_OPTIONS='--max-old-space-size=8192' && next start",
+    "lint": "export NODE_OPTIONS='--max-old-space-size=8192' && next lint"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.513.0",
