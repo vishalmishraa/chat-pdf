@@ -75,7 +75,7 @@ const FileUpload = () => {
         <div  {...getRootProps({
             className : 'border-dashed rounded-xl cursor-pointer bg-gray-50 p-8 flex justify-center items-center flex-col'
         })}>
-            <input disabled className='text-slate-400  border-slate-400' {...getInputProps} />
+            <input {...getInputProps()} />
             {
                 uploading || isLoading ? (
                     <>
@@ -88,7 +88,7 @@ const FileUpload = () => {
                 ):
                 (
                     <>
-                        <input type="" />
+                    
                         <Inbox className='w-10 h-10 text-blue-500'></Inbox>
                         <p className='mt-2 text-sm text-slate-400'>Drop PDF here (Max : 10 MB) </p>
                     </>

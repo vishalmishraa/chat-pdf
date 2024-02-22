@@ -12,7 +12,10 @@ const Navigation =  async() => {
   return (
     <div className="  fixed top-0 right-0 left-0 p-4 flex items-center justify-between z-10">
       <aside className=" md:ml-40 flex items-center gap-2">
+        <Link href={'/'}>
+
         <span className="text-xl font-bold"> Chat PDF</span>
+        </Link>
       </aside>    
       <aside className=" hidden md:mr-7 md:ml-auto md:flex gap-2 items-center">
         <nav>
