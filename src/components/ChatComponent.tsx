@@ -42,7 +42,7 @@ const ChatComponent = ({ chatId }: Props) => {
   }, [messages]);
   return (
     <div
-      className="relative overflow-scroll h-full border-none"
+      className="relative h-full overflow-scroll border-none"
       id="message-container "
     >
       {/* header */}
@@ -53,8 +53,8 @@ const ChatComponent = ({ chatId }: Props) => {
       {/* message list */}
       <MessageList messages={messages} isLoading={isLoading} />
 
-      {/* {
-        isLoading && ( */}
+      {
+        !isLoading && (
 
 
               <form
@@ -76,9 +76,9 @@ const ChatComponent = ({ chatId }: Props) => {
                   </Button>
                 </div>
               </form>
-{/* 
+ 
         ) 
-      } */}
+      } 
 
     </div>
   );
