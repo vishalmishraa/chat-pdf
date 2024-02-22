@@ -1,7 +1,7 @@
 
 import { getContext } from '@/lib/context';
 import { db } from '@/lib/db';
-import { chats } from '@/lib/db/schema';
+import { chats ,messages as _messages} from '@/lib/db/schema';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { GoogleGenerativeAIStream, Message, StreamingTextResponse } from 'ai';
 import { eq } from 'drizzle-orm';
@@ -70,7 +70,6 @@ export async function POST(req: Request) {
         AI will answer the next question based on this context.
                         AI will answer the question only. "The question is : `;
 
-                      const prompt2 = `Reply me based on this given contaxt , take this care fully  , insert space where needed , then answer : ${context} , now answer the question based on this . , never repeat the context even if it asked in question in any way : the question is "`;
                       
                         const geminiStream = await genAI
                             .getGenerativeModel({ model: 'gemini-pro' })
@@ -92,7 +91,24 @@ export async function POST(req: Request) {
                             .sendMessageStream(lastMessage.content);                            
 
                               // Convert the response into a friendly text-stream
-                        const stream = GoogleGenerativeAIStream(geminiStream);
+                        const stream = GoogleGenerativeAIStream(geminiStream,{
+                          onStart: async () => {
+                            // save user message into db
+                            await db.insert(_messages).values({
+                              chatId,
+                              content: lastMessage.content,
+                              role: "user",
+                            });
+                          },
+                          onCompletion: async (completion) => {
+                            // save ai message into db
+                            await db.insert(_messages).values({
+                              chatId,
+                              content: completion,
+                              role: "model",
+                            });
+                          },
+                        });
                       
                         // Respond with the stream
                         return new StreamingTextResponse(stream);
