@@ -85,7 +85,7 @@ export async function POST(req: Request) {
                                 },
                               ],
                               generationConfig: {
-                                maxOutputTokens: 500,
+                                maxOutputTokens: 1000,
                               },
                             })
                             .sendMessageStream(lastMessage.content);                            
