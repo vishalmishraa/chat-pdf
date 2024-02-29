@@ -7,6 +7,8 @@ import Navigation from "@/components/nevigation";
 import { ThemeProvider } from "@/components/global/theme-provider"
 import Providers from "@/components/Providers";
 import {Toaster} from 'react-hot-toast';
+import Script from "next/script";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +26,7 @@ export default function RootLayout({
       <Providers>
 
           <html lang="en">
-          
+          <GoogleAnalytics gaId="G-SHYFWSMP2Y"/>
             <body className={inter.className}>
             
                   <Navigation/>
@@ -32,6 +34,7 @@ export default function RootLayout({
                   <Toaster />
               
               </body>
+
           </html>
          
       </Providers>
