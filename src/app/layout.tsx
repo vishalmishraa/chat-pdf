@@ -26,6 +26,7 @@ export default function RootLayout({
       <Providers>
 
           <html lang="en">
+          <GoogleAnalytics gaId="G-SHYFWSMP2Y"/>
          
             <body className={inter.className}>
             
@@ -34,7 +35,6 @@ export default function RootLayout({
                   <Toaster />
               
               </body>
-              <GoogleAnalytics gaId="G-SHYFWSMP2Y"/>
           </html>
          
       </Providers>
