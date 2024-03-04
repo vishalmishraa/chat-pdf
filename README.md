@@ -15,7 +15,6 @@ To set up the project, follow these steps:
     - NeonDB
     - AWS
 
-    Make a list of these keys and provide the corresponding links to the websites where users can obtain them.
 
 3. Set up your Next.js project by running the following commands:
 
