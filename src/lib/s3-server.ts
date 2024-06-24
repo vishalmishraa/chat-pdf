@@ -4,7 +4,7 @@ export async function downloadFromS3(file_key: string): Promise<string> {
   return new Promise(async (resolve, reject) => {
     try {
       const s3 = new S3({
-        region: "ap-south-1",
+        region: "ap-southeast-2",
         credentials: {
           accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID!,
           secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,

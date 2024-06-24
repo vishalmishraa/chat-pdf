@@ -4,7 +4,7 @@ export async function uploadToS3(file: File ): Promise<{ file_key: string; file_
         return new Promise(async(resolve, reject) => {
           try {
                 const s3 = new S3({
-                  region: "ap-south-1",
+                  region: "ap-southeast-2",
                   credentials: {
                     accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID!,
                     secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
@@ -35,6 +35,6 @@ export async function uploadToS3(file: File ): Promise<{ file_key: string; file_
 }
 
 export function getS3Url(file_key: string) {
-  const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.ap-south-1.amazonaws.com/${file_key}`;
+  const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.ap-southeast-2.amazonaws.com/${file_key}`;
   return url;
-}
+} 
